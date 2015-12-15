@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--此為導航抽屜項目Menu-->
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <!-- android:checkableBehavior屬性設定選項行為，此為單選-->
+    <group android:checkableBehavior="single">
+        <item android:title="功能選單">
+            <menu>
+                <item
+                    android:id="@+id/car_management"
+                    android:title="愛車檔案"/>
+                <item
+                    android:id="@+id/maintenance_records_management"
+                    android:title="保養紀錄管理"/>
+                <item
+                    android:id="@+id/gas_station_location"
+                    android:title="加油站位置"/>
+            </menu>
+        </item>
+        <item android:title="其他選單">
+            <menu>
+                <item
+                    android:id="@+id/setup"
+                    android:title="設定"/>
+                <item
+                    android:id="@+id/about"
+                    android:title="關於我們"/>
+            </menu>
+        </item>
+    </group>
 </menu>
