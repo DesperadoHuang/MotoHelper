@@ -20,12 +20,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="15dp"
-        android:text="使用者名稱"
+        android:text="路人甲"
         android:textAppearance="@style/TextAppearance.AppCompat"/>
 
     <TextView
         android:id="@+id/email_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="使用者的信箱"/>
+        android:text="尚未設定信箱"/>
 </LinearLayout>
