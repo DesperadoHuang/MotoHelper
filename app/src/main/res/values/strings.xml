@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">MotoHelper</string>
+    <string name="drawer_open">導航抽屜開啟</string>
+    <string name="drawer_close">導航抽屜關閉</string>
 </resources>
