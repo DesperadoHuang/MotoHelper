@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/CH14_01_LocationGPS/CH14_01_LocationGPS.iml" filepath="$PROJECT_DIR$/CH14_01_LocationGPS/CH14_01_LocationGPS.iml" />
       <module fileurl="file://$PROJECT_DIR$/MotoHelper.iml" filepath="$PROJECT_DIR$/MotoHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/MotoHelper/MotoHelper-MotoHelper.iml" filepath="$PROJECT_DIR$/MotoHelper/MotoHelper-MotoHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/locationgps_demo/locationgps_demo.iml" filepath="$PROJECT_DIR$/locationgps_demo/locationgps_demo.iml" />
