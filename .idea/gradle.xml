@@ -11,7 +11,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/CH14_01_LocationGPS" />
-            <option value="$PROJECT_DIR$/app" />
+            <option value="$PROJECT_DIR$/MotoHelper" />
+            <option value="$PROJECT_DIR$/locationgps_demo" />
           </set>
         </option>
       </GradleProjectSettings>

@@ -1,1 +1,1 @@
-include ':app', ':CH14_01_LocationGPS'
+include ':MotoHelper', ':CH14_01_LocationGPS', ':locationgps_demo'
