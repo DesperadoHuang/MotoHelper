@@ -47,6 +47,11 @@ public class MainActivity extends AppCompatActivity {
         openGPS(context);
     }
 
+    /**
+     * 判斷GPS或NETWORK是否開啟，若無開，則轉跳至手動GPS設定畫面
+     *
+     * @param context 當前的Activity
+     */
     public void openGPS(Context context) {
         boolean gps = myLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
         boolean network = myLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
@@ -55,12 +60,16 @@ public class MainActivity extends AppCompatActivity {
         if (gps || network) {
             return;
         } else {
+            //開啟手動設定GPS的畫面
             Intent gpsOptionIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(gpsOptionIntent);
         }
     }
 
 
+    /**
+     * 在onResume階段註冊 LocationListener 監聽器，已取得地理位置的更新資料
+     */
     @Override
     protected void onResume() {
         if (myLocationManager == null) {
@@ -68,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
             myLocationListener = new MyLocationListener();
         }
 
+        //獲得地理位置的更新資料( GPS 與 NETWORK 都註冊)
         myLocationManager.requestLocationUpdates(LM_GPS, 0, 0, myLocationListener);
         myLocationManager.requestLocationUpdates(LM_NETWORK, 0, 0, myLocationListener);
         setTitle("onResume...");
@@ -75,9 +85,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
     }
 
+    /**
+     * 在onPause階段移除 LocationListener 監聽器，不再獲得地理位置的更新資料
+     */
     @Override
     protected void onPause() {
         if (myLocationManager != null) {
+            //移除 LocationListener 監聽器
             myLocationManager.removeUpdates(myLocationListener);
             myLocationManager = null;
         }
@@ -85,7 +99,16 @@ public class MainActivity extends AppCompatActivity {
         super.onPause();
     }
 
+    /**
+     * 實作LocationListener介面
+     */
     private class MyLocationListener implements LocationListener {
+
+        /**
+         * 位置資訊更新後呼叫
+         *
+         * @param location 更新後的位置
+         */
         @Override
         public void onLocationChanged(Location location) {
             textView1.setText("Location-GPS:" + "\n" +
@@ -99,6 +122,13 @@ public class MainActivity extends AppCompatActivity {
             setTitle("GPS位置已更新");
         }
 
+        /**
+         * 位置資訊改變時呼叫
+         *
+         * @param provider
+         * @param status   改變後狀態
+         * @param extras
+         */
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             switch (status) {

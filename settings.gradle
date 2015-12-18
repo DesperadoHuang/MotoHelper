@@ -1,1 +1,1 @@
-include ':MotoHelper', ':locationgps_demo'
+include ':MotoHelper', ':locationgps_demo', ':googlemaps_demo'

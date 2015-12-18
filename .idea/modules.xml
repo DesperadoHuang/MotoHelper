@@ -4,6 +4,7 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MotoHelper.iml" filepath="$PROJECT_DIR$/MotoHelper.iml" />
       <module fileurl="file://$PROJECT_DIR$/MotoHelper/MotoHelper-MotoHelper.iml" filepath="$PROJECT_DIR$/MotoHelper/MotoHelper-MotoHelper.iml" />
+      <module fileurl="file://$PROJECT_DIR$/googlemaps_demo/googlemaps_demo.iml" filepath="$PROJECT_DIR$/googlemaps_demo/googlemaps_demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/locationgps_demo/locationgps_demo.iml" filepath="$PROJECT_DIR$/locationgps_demo/locationgps_demo.iml" />
     </modules>
   </component>
