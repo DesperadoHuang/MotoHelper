@@ -1,7 +1,8 @@
 package com.mian.googlemaps_demo;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
@@ -26,7 +27,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpMapIfNeeded() {
         if (googleMap == null) {
-            googleMap = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map)).getMap();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            SupportMapFragment supportMapFragment = (SupportMapFragment) fragmentManager.findFragmentById(R.id.map);
+            googleMap = supportMapFragment.getMap();
         }
         if (googleMap != null) {
             setUpMap();

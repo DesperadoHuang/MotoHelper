@@ -13,6 +13,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
 import com.mian.motohelper.fragments.AboutFragment;
 import com.mian.motohelper.fragments.CarInformationFragment;
 import com.mian.motohelper.fragments.GasStationLocationFragment;
@@ -30,6 +31,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentTransaction fragmentTransaction;
     private int nowContentId;
 
+    private GoogleMap myGoogleMap;
+
+    private int fragmentID = -1;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initToolbar();
         initDrawer();
         initNavigationView();
+
 
     }
 
@@ -92,12 +99,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
      */
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
-        int id = item.getItemId();
+        fragmentID = item.getItemId();
         String title = item.getTitle().toString();
         toolbar.setTitle(title);
         MyTools.myLog("click" + title);
-        if (nowContentId != id) {
-            replaceFragment(id, title);
+        if (nowContentId != fragmentID) {
+            replaceFragment(fragmentID, title);
         } else {
             Toast.makeText(MainActivity.this, "目前正處於\"" + title + "\"頁面", Toast.LENGTH_SHORT).show();
         }
@@ -130,6 +137,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+
     /**
      * 按下返回鍵要執行的動作
      */
@@ -154,5 +162,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
             super.onBackPressed();
         }
     }
+
 
 }

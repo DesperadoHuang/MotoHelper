@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="cities_List">
+        <item>台北</item>
+        <item>台中</item>
+        <item>高雄</item>
+    </string-array>
+    <string-array name="stationType_List">
+        <item>中油</item>
+        <item>台塑</item>
+    </string-array>
+</resources>
