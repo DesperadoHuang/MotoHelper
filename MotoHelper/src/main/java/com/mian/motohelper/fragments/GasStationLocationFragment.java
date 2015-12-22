@@ -26,15 +26,15 @@ import com.mian.motohelper.R;
  * "加油站位置"頁面的Fragment
  */
 public class GasStationLocationFragment extends Fragment {
-    private Context context;
-    private MapView mapView;
+    private Context context;//使用此Fragment的Activity
+    private MapView mapView;//顯示地圖的View
     private GoogleMap googleMap;
 
-    private final String LM_GPS = LocationManager.GPS_PROVIDER;
-    private final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;
+    private final String LM_GPS = LocationManager.GPS_PROVIDER;//GPS定位提供者
+    private final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;//NETWORK定位提供者
 
-    private LocationManager locationManager;
-    private LocationListener locationListener;
+    private LocationManager locationManager;//定位管理器
+    private LocationListener locationListener;//定位監聽器
 
     private double latitude;//經度
     private double longitude;//緯度
@@ -50,19 +50,9 @@ public class GasStationLocationFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        context = getActivity();
-        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
-        locationListener = new MyLocationListener();
-
-
+        //載入此Fragment的畫面Layout
         View rootView = inflater.inflate(R.layout.fragment_gas_station_location, container, false);
-
-        mapView = (MapView) rootView.findViewById(R.id.google_maps);
-        mapView.onCreate(savedInstanceState);
-        mapView.onResume();
-
-        MapsInitializer.initialize(context);
-        googleMap = mapView.getMap();
+        mapView = (MapView) rootView.findViewById(R.id.google_maps);//取得元件物件
 
         return rootView;
 
@@ -71,6 +61,16 @@ public class GasStationLocationFragment extends Fragment {
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        context = getActivity();//取得Activity
+
+        locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);//取得系統的定位服務
+        locationListener = new MyLocationListener();//建立監聽物件
+
+        mapView.onCreate(savedInstanceState);
+        mapView.onResume();
+
+        MapsInitializer.initialize(context);//初始化GoogleAPI
+        googleMap = mapView.getMap();//取得GoogleMap物件
     }
 
 
@@ -80,10 +80,11 @@ public class GasStationLocationFragment extends Fragment {
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
             locationListener = new MyLocationListener();
         }
-        locationManager.requestLocationUpdates(LM_GPS, 0, 0, locationListener);
-        locationManager.requestLocationUpdates(LM_NETWORK, 0, 0, locationListener);
+        locationManager.requestLocationUpdates(LM_GPS, 0, 0, locationListener);//註冊GPS定位更新監聽事件
+        locationManager.requestLocationUpdates(LM_NETWORK, 0, 0, locationListener);//註冊NETWORK定位監聽事件
         openGPS(context);
         super.onResume();
+
         mapView.onResume();
 
     }
@@ -91,27 +92,37 @@ public class GasStationLocationFragment extends Fragment {
     @Override
     public void onPause() {
         if (locationManager != null) {
-            locationManager.removeUpdates(locationListener);
+            locationManager.removeUpdates(locationListener);//移除定位監聽
             locationManager = null;
         }
-
         super.onPause();
+
         mapView.onPause();
     }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
         mapView.onDestroy();
     }
 
     @Override
     public void onLowMemory() {
         super.onLowMemory();
+
         mapView.onLowMemory();
     }
 
+    /**
+     * 實作定位監聽事件的類別
+     */
     private class MyLocationListener implements LocationListener {
+        /**
+         * 位置資訊改變時呼叫
+         *
+         * @param location 位置改變後的資訊
+         */
         @Override
         public void onLocationChanged(Location location) {
             latitude = location.getLatitude();
@@ -120,6 +131,13 @@ public class GasStationLocationFragment extends Fragment {
             Toast.makeText(context, "位置資訊已改變", Toast.LENGTH_SHORT).show();
         }
 
+        /**
+         * 網路狀態改變時呼叫
+         *
+         * @param provider
+         * @param status
+         * @param extras
+         */
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
             switch (status) {
@@ -143,9 +161,14 @@ public class GasStationLocationFragment extends Fragment {
         }
     }
 
+    /**
+     * 判斷GPS或網路基地台定位是否啟用，若無啟用則自動轉跳至GPS設定畫面
+     *
+     * @param context
+     */
     private void openGPS(Context context) {
-        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
-        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+        boolean gps = locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);//GPS是否啟用
+        boolean network = locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);//網路基地台定位是否啟用
 
         String gpsStatue = gps ? "啟用" : "未啟用";
         String networkStatue = network ? "啟用" : "未啟用";
@@ -154,6 +177,7 @@ public class GasStationLocationFragment extends Fragment {
         if (gps || network) {
             return;
         } else {
+            //轉跳至GPS設定畫面
             Intent gpsOptionIntent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
             startActivity(gpsOptionIntent);
 
