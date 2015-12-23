@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
      * @param durationMs 動畫持續的時間(毫秒)
      */
     private void playAnimateCamera(LatLng latLng, int durationMs) {
-        //設定地圖相機鏡頭的位置參數
+        //設定地圖相機鏡頭於該座標時的位置參數，例如；縮放大小、旋轉角度、傾斜角度
         CameraPosition cameraPosition = new CameraPosition.Builder()
                 .target(latLng)//座標的位置
                 .zoom(17.0f)//縮放的大小，要 >= 17 才會顯示建築物
@@ -90,10 +90,11 @@ public class MainActivity extends AppCompatActivity {
                 .tilt(67)//傾斜的角度
                 .build();
 
-        //取得CameraUpdate物件，定義地圖相機鏡頭的移動
+        //設定相機鏡頭在舊座標與新座標之間的樣式(?)
+        //會傳回CameraUpdate物件
         CameraUpdate cameraUpdate = CameraUpdateFactory.newCameraPosition(cameraPosition);
 
-        //地圖相關鏡頭動畫行程設定
+        //地圖相機鏡頭動畫行程設定
         myMap.animateCamera(cameraUpdate, durationMs, null);
     }
 

@@ -19,9 +19,16 @@ import java.util.concurrent.FutureTask;
  * Created by WilsonHuang on 2015/12/22.
  */
 public class Helper {
+
+    //傳回JSON資料格式的URL
     public static String DOMAIN = "http://maps.googleapis.com/maps/api/geocode/json";
 
-
+    /**
+     * 依照LatLng同步地取得Address
+     *
+     * @param latLng 所點選的座標
+     * @return 該座標的地址
+     */
     public static String getAddressByLatLng(LatLng latLng) {
         String address = "";
         Helper.LatLngToAddress ga = new Helper.LatLngToAddress(latLng);
@@ -36,6 +43,12 @@ public class Helper {
     }
 
 
+    /**
+     * 依照Address同步地取得LatLng
+     *
+     * @param address 要查詢的地址
+     * @return 該地址的座標
+     */
     public static LatLng getLatLngByAddress(String address) {
         LatLng latLng = null;
         Helper.AddressToLatLng ga = new Helper.AddressToLatLng(address);
@@ -49,7 +62,18 @@ public class Helper {
         return latLng;
     }
 
+    /**
+     * 將URL所傳回的內容轉成String的類別
+     */
     private static class HttpUtil {
+
+        /**
+         * 將URL所傳回的內容轉成String
+         *
+         * @param urlString
+         * @return
+         * @throws Exception
+         */
         public static String get(String urlString) throws Exception {
             InputStream inputStream = null;
             Reader reader = null;
@@ -67,6 +91,9 @@ public class Helper {
         }
     }
 
+    /**
+     * LatLng 轉成 Address 的類別
+     */
     private static class LatLngToAddress implements Callable<String> {
         private String queryURLString = DOMAIN + "?latlng=%s,%s&sensor=true&language=zh_tw";
         private String address = null;
@@ -79,17 +106,27 @@ public class Helper {
 
         @Override
         public String call() throws Exception {
+            //輸入經緯度得到地址
             address = getAddressByLocation();
             return address;
         }
 
+        /**
+         * 分析json取得Address
+         *
+         * @return Address
+         */
         private String getAddressByLocation() {
             String urlString = String.format(queryURLString, latLng.latitude, latLng.longitude);
             try {
+                //取得json string
                 String jsonStr = HttpUtil.get(urlString);
+                //取得 json 根陣列節點 results
                 JSONArray results = new JSONObject(jsonStr).getJSONArray("results");
                 if (results.length() >= 1) {
+                    //取得 results[0] 元素
                     JSONObject jsonObject = results.getJSONObject(0);
+                    //取得 formatted_address 屬性內容
                     address = jsonObject.optString("formatted_address");
                 }
             } catch (Exception ex) {
@@ -101,6 +138,9 @@ public class Helper {
     }
 
 
+    /**
+     * Address 轉成 LatLng 的類別
+     */
     private static class AddressToLatLng implements Callable<LatLng> {
         private String queryURLString = DOMAIN + "?address=%s&sensor=false&language=zh_tw";
         private String address;
@@ -113,6 +153,7 @@ public class Helper {
         public LatLng call() {
             LatLng latLng = null;
             try {
+                //輸入地址得到經緯度(中文地址必須透過URLEncoder編碼)
                 latLng = getLocationByAddress(URLEncoder.encode(address, "UTF-8"));
             } catch (UnsupportedEncodingException ex) {
 
@@ -120,17 +161,31 @@ public class Helper {
             return latLng;
         }
 
+        /**
+         * 分析json取得LatLng
+         *
+         * @param address
+         * @return LatLng
+         */
         private LatLng getLocationByAddress(String address) {
             String urlString = String.format(queryURLString, address);
             LatLng latLng = null;
             try {
+                //取得 json String
                 String jsonStr = HttpUtil.get(urlString);
+                //取得 json 根陣列節點 results
                 JSONArray results = new JSONObject(jsonStr).getJSONArray("results");
                 System.out.println("results.length():" + results.length());
                 if (results.length() >= 1) {
+                    //取得 results[0] 元素
                     JSONObject jsonObject = results.getJSONObject(0);
+                    //取得 geometry 節點的物件(Location)
                     JSONObject laln = jsonObject.getJSONObject("geometry").getJSONObject("location");
-                    latLng = new LatLng(Double.parseDouble(laln.getString("lat")), Double.parseDouble(laln.getString("lng")));
+
+                    latLng = new LatLng(
+                            Double.parseDouble(laln.getString("lat")),//取得lat屬性內容
+                            Double.parseDouble(laln.getString("lng")) //取得lng屬性內容
+                    );
                 }
             } catch (Exception ex) {
                 ex.printStackTrace();
