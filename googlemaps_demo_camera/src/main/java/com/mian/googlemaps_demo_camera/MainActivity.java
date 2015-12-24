@@ -14,11 +14,13 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MainActivity extends AppCompatActivity {
     private GoogleMap myMap;
     private Context context;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -96,8 +98,21 @@ public class MainActivity extends AppCompatActivity {
 
         //地圖相機鏡頭動畫行程設定
         myMap.animateCamera(cameraUpdate, durationMs, null);
+
+        //displayBounds();
     }
 
+    /**
+     * 顯示地界
+     */
+    private void displayBounds() {
+        LatLngBounds latLngBounds = new LatLngBounds( //設定地界
+                new LatLng(22.594786, 120.280230), //地圖西南點的座標
+                new LatLng(22.659738, 120.345044)  //地圖東北點的座標
+        );
+
+        myMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(), 25));
+    }
 
     /**
      * 取得GoogleMap物件，確保GoogleMap物件不為null
@@ -114,4 +129,6 @@ public class MainActivity extends AppCompatActivity {
     private void setUpMap() {
         myMap.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
+
+
 }

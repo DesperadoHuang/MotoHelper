@@ -73,7 +73,6 @@ public class GasStationLocationFragment extends Fragment {
         googleMap = mapView.getMap();//取得GoogleMap物件
     }
 
-
     @Override
     public void onResume() {
         if (locationManager == null) {
