@@ -1,5 +1,6 @@
 package com.tools;
 
+import android.location.Location;
 import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
@@ -36,7 +37,7 @@ public class MyTools {
 
 
     /******************************************************************************************
-     * 這只是分隔島 *                以下為地圖座標與地址間的轉換工具
+     * 這只是分隔島 *                以下為地圖相關工具
      ******************************************************************************************/
 
     //傳回JSON資料格式的URL
@@ -211,5 +212,22 @@ public class MyTools {
             }
             return latLng;
         }
+    }
+
+    /**
+     * 使用Location.distanceBetween API 取得大圓距離(地球上兩個座標之間的距離)
+     *
+     * @param startLatLng 起點座標
+     * @param endLatLng   終點座標
+     * @return 地球上兩點之間的距離(公尺)
+     */
+    private static float getDistanceBetween(LatLng startLatLng, LatLng endLatLng) {
+        float[] results = new float[1];
+        double startLat = startLatLng.latitude;
+        double startLng = startLatLng.longitude;
+        double endLat = endLatLng.latitude;
+        double endLng = endLatLng.longitude;
+        Location.distanceBetween(startLat, startLng, endLat, endLng, results);
+        return results[0];
     }
 }
