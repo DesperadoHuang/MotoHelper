@@ -44,7 +44,6 @@ public class GasStationLocationFragment extends Fragment implements
     private GoogleMap googleMap;
     private UiSettings uiSettings;//地圖使用者介面設定物件
     private final String LM_GPS = LocationManager.GPS_PROVIDER;//GPS定位提供者
-    private final String LM_NETWORK = LocationManager.NETWORK_PROVIDER;//NETWORK定位提供者
     private LocationManager locationManager;
     private Location lastPosition;//最後已知位置
     private LocationListener locationListener;
@@ -58,8 +57,6 @@ public class GasStationLocationFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
     }
 
     @Override
@@ -70,7 +67,6 @@ public class GasStationLocationFragment extends Fragment implements
         mapView = (MapView) rootView.findViewById(R.id.google_maps);//取得元件物件
 
         return rootView;
-
     }
 
     @Override

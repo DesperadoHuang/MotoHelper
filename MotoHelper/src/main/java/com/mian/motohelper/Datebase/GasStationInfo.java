@@ -7,13 +7,15 @@ public class GasStationInfo {
     private String type;
     private String name;
     private String address;
+    private String phoneNumber;
     private double latitude;
     private double longitude;
 
-    public GasStationInfo(String type, String name, String address, double latitude, double longitude) {
+    public GasStationInfo(String type, String name, String address, String phoneNumber, double latitude, double longitude) {
         this.type = type;
         this.name = name;
         this.address = address;
+        this.phoneNumber = phoneNumber;
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -40,6 +42,14 @@ public class GasStationInfo {
 
     public void setAddress(String address) {
         this.address = address;
+    }
+
+    public String getPhoneNumber() {
+        return phoneNumber;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
     }
 
     public double getLatitude() {
