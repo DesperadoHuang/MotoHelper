@@ -3,6 +3,7 @@ package com.mian.motohelper;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -14,6 +15,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.GoogleMap;
+import com.mian.motohelper.Datebase.GasStationDAO;
 import com.mian.motohelper.fragments.AboutFragment;
 import com.mian.motohelper.fragments.CarInformationFragment;
 import com.mian.motohelper.fragments.GasStationLocationFragment;
@@ -31,6 +33,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private FragmentTransaction fragmentTransaction;
     private int nowContentId;
 
+    private GasStationDAO gasStationDAO;
+
     private GoogleMap myGoogleMap;
 
     private int fragmentID = -1;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        intiDatabase(MainActivity.this);
+
         processViews();
 
         initIndex();
@@ -49,6 +55,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         initNavigationView();
 
 
+    }
+
+    private void intiDatabase(Context context) {
+        gasStationDAO = new GasStationDAO(context);
+        gasStationDAO.deleteTable();
+        gasStationDAO.insert();
     }
 
     /**
@@ -137,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
     /**
      * 按下返回鍵要執行的動作
      */
@@ -163,5 +174,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-
+    @Override
+    protected void onDestroy() {
+        gasStationDAO.closeDB();
+        super.onDestroy();
+    }
 }

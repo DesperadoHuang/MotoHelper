@@ -20,7 +20,7 @@ import java.util.concurrent.FutureTask;
 
 /**
  * 工具類別
- * <p/>
+ * <p>
  * Created by WilsonHuang on 2015/12/16.
  */
 public class MyTools {
@@ -29,10 +29,13 @@ public class MyTools {
      * 這只是分隔島 *                   以下為測試工具
      ******************************************************************************************/
 
+    public static final boolean isOpenDebug = true;
     private static final String TAG = "debug";
 
     public static void myLog(String message) {
-        Log.i(TAG, message);
+        if (isOpenDebug) {
+            Log.i(TAG, message);
+        }
     }
 
 
