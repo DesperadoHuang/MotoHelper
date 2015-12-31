@@ -22,19 +22,19 @@ public class GasStationDAO {
     public static final String ADDRESS_COLUMN = "address";//地址
     public static final String PHONENUMBER_COLUMN = "phoneNumber";//電話
 
-    public static final String TEXT_NOT_NULL = " TEXT NOT NULL";
-    public static final String REAL_NOT_NULL = " REAL NOT NULL";
-    public static final String COMMA_SEP = ",";
+    public static final String TEXT_TYPE = " TEXT";
+    public static final String REAL_TYPE = " REAL";
+    public static final String COMMA_SEP = ",";//逗號
 
     //建立table
     public static final String CREATE_TABLE =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     KEY_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    TYPE_COLUMN + TEXT_NOT_NULL + COMMA_SEP +
-                    LATITUDE_COLUMN + REAL_NOT_NULL + COMMA_SEP +
-                    LONGITUDE_COLUMN + REAL_NOT_NULL + COMMA_SEP +
-                    ADDRESS_COLUMN + TEXT_NOT_NULL + COMMA_SEP +
-                    PHONENUMBER_COLUMN + TEXT_NOT_NULL + ")";
+                    TYPE_COLUMN + TEXT_TYPE + COMMA_SEP +
+                    LATITUDE_COLUMN + REAL_TYPE + COMMA_SEP +
+                    LONGITUDE_COLUMN + REAL_TYPE + COMMA_SEP +
+                    ADDRESS_COLUMN + TEXT_TYPE + COMMA_SEP +
+                    PHONENUMBER_COLUMN + TEXT_TYPE + ")";
 
     //刪除table
     public static final String DELETE_TABLE =
@@ -57,6 +57,7 @@ public class GasStationDAO {
     public void insert() {
 
         ArrayList<GasStationInfo> list = new StationData().getAllStation();
+
         for (int index = 0; index < list.size(); index++) {
             GasStationInfo station = list.get(index);
             ContentValues cv = new ContentValues();
@@ -65,14 +66,7 @@ public class GasStationDAO {
             cv.put(GasStationDAO.LONGITUDE_COLUMN, station.getLongitude());
             cv.put(GasStationDAO.ADDRESS_COLUMN, station.getAddress());
             cv.put(GasStationDAO.PHONENUMBER_COLUMN, station.getPhoneNumber());
-
             database.insert(TABLE_NAME, null, cv);
-            MyTools.myLog("成功新增第 " + (index + 1) + " 筆資料" +
-                    " type:" + station.getType() +
-                    " latitude:" + station.getLatitude() +
-                    " longitude:" + station.getLongitude() +
-                    " address:" + station.getAddress() +
-                    " phoneNumber:" + station.getPhoneNumber());
         }
         MyTools.myLog("新增資料結束!!");
     }
@@ -102,8 +96,8 @@ public class GasStationDAO {
      * @return
      */
     public Cursor getAllCursor() {
-
-        return null;
+        Cursor allCursor = database.query(TABLE_NAME, null, null, null, null, null, null);
+        return allCursor;
     }
 
 }

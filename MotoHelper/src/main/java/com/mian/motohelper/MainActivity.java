@@ -4,7 +4,9 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -14,7 +16,6 @@ import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Toast;
 
-import com.google.android.gms.maps.GoogleMap;
 import com.mian.motohelper.Datebase.GasStationDAO;
 import com.mian.motohelper.fragments.AboutFragment;
 import com.mian.motohelper.fragments.CarInformationFragment;
@@ -35,7 +36,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     private GasStationDAO gasStationDAO;
 
-    private GoogleMap myGoogleMap;
+    private SharedPreferences sp;
+    private static final String FRIST_OPEN = "FRIST_OPEN";
 
     private int fragmentID = -1;
 
@@ -57,10 +59,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     }
 
+    /**
+     * 初始化資料庫
+     *
+     * @param context
+     */
     private void intiDatabase(Context context) {
-        gasStationDAO = new GasStationDAO(context);
-        gasStationDAO.deleteTable();
-        gasStationDAO.insert();
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sp.edit();
+        boolean isFristOpen = sp.getBoolean(FRIST_OPEN, true);
+        if (isFristOpen) {
+            gasStationDAO = new GasStationDAO(context);
+            gasStationDAO.insert();
+            gasStationDAO.closeDB();
+            editor.putBoolean(FRIST_OPEN, false);
+
+        }
+        editor.commit();
     }
 
     /**
@@ -176,7 +191,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
     @Override
     protected void onDestroy() {
-        gasStationDAO.closeDB();
         super.onDestroy();
     }
 }

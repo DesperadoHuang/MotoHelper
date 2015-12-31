@@ -6,9 +6,10 @@ import java.util.ArrayList;
  * Created by WilsonHuang on 2015/12/30.
  */
 public class StationData {
-    private ArrayList<GasStationInfo> allStation = new ArrayList<GasStationInfo>();
+    private ArrayList<GasStationInfo> allStation;
 
     public StationData() {
+        allStation = new ArrayList<GasStationInfo>();
         putData();
     }
 

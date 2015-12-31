@@ -1,16 +1,15 @@
 package com.mian.motohelper.fragments;
 
 
-import android.Manifest;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.support.v4.app.ActivityCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +28,8 @@ import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.mian.motohelper.Datebase.GasStationDAO;
 import com.mian.motohelper.R;
 import com.tools.MyTools;
 
@@ -50,6 +51,10 @@ public class GasStationLocationFragment extends Fragment implements
 
     private GoogleApiClient googleApiClient;
     private LocationRequest locationRequest;
+
+    private GasStationDAO gasStationDAO;
+    private Cursor cursor;
+
 
     public GasStationLocationFragment() {
     }
@@ -74,11 +79,15 @@ public class GasStationLocationFragment extends Fragment implements
         super.onActivityCreated(savedInstanceState);
         mapView.onCreate(savedInstanceState);
         context = getActivity();//取得Activity
+
+
         buildGoogleApiClient();
         initMap();
         initMapUiSettings();
         processControllers();
+
     }
+
 
     /**
      * 建立GoogleApiClient物件
@@ -105,6 +114,7 @@ public class GasStationLocationFragment extends Fragment implements
             locationManager = (LocationManager) context.getSystemService(Context.LOCATION_SERVICE);
         }
         moveToCurrentLocation();
+        markerStation();
         super.onResume();
         mapView.onResume();
 
@@ -253,4 +263,17 @@ public class GasStationLocationFragment extends Fragment implements
         }
     }
 
+    private void markerStation() {
+        gasStationDAO = new GasStationDAO(context);
+        Cursor cursor = gasStationDAO.getAllCursor();
+        while (cursor.moveToNext()) {
+            String stationType = cursor.getString(1);
+            double latitude = cursor.getDouble(2);
+            double longitdue = cursor.getDouble(3);
+            LatLng latlng = new LatLng(latitude, longitdue);
+            googleMap.addMarker(new MarkerOptions().position(latlng).title(stationType));
+        }
+        cursor.close();
+        gasStationDAO.closeDB();
+    }
 }
